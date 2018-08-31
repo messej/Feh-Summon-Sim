@@ -1,0 +1,106 @@
+Ares: Black Knight	Red
+Athena: Borderland Sword	Red
+Caeda: Talys's Heart	Red
+Cain: The Bull	Red
+Chrom: Exalted Prince	Red
+Corrin: Fateful Prince	Red
+Draug: Gentle Giant	Red
+Eirika: Restoration Lady	Red
+Eliwood: Knight of Lycia	Red
+Fir: Sword Student	Red
+Hana: Focused Samurai	Red
+Henry: Twisted Mind	Red
+Hinata: Wild Samurai	Red
+Laslow: Dancing Duelist	Red
+Lilina: Delightful Noble	Red
+Lon'qu: Solitary Blade	Red
+Marth: Altean Prince	Red
+Morgan: Lad from Afar	Red
+Ogma: Loyal Blade	Red
+Olivia: Blushing Beauty	Red
+Palla: Eldest Whitewing	Red
+Raigh: Dark Child	Red
+Roy: Young Lion	Red
+Selena: Cutting Wit	Red
+Seliph: Heir of Light	Red
+Seth: Silver Knight	Red
+Soleil: Adorable Adorer	Red
+Sophia: Nabata Prophet	Red
+Stahl: Viridian Knight	Red
+Tharja: Dark Shadow	Red
+Tiki: Naga's Voice	Red
+Abel: The Panther	Blue
+Catria: Middle Whitewing	Blue
+Clair: Highborn Flier	Blue
+Cordelia: Knight Paragon	Blue
+Corrin: Fateful Princess	Blue
+Donnel: Village Hero	Blue
+Effie: Army of One	Blue
+Est: Junior Whitewing	Blue
+Florina: Lovely Flier	Blue
+Gwendolyn: Adorable Knight	Blue
+Jagen: Veteran Knight	Blue
+L'Arachel: Princess of Light	Blue
+Lukas: Sharp Soldier	Blue
+Mae: Bundle of Energy	Blue
+Mathilda: Legendary Knight	Blue
+Nowi: Eternal Youth	Blue
+Oboro: Fierce Fighter	Blue
+Odin: Potent Force	Blue
+Oscar: Agile Horseman	Blue
+Peri: Playful Slayer	Blue
+Reinhardt: Thunder's Fist	Blue
+Robin: High Deliverer	Blue
+Roderick: Steady Squire	Blue
+Shanna: Sprightly Flier	Blue
+Shigure: Uplifting Artist	Blue
+Subaki: Perfect Expert	Blue
+Sully: Crimson Knight	Blue
+Tailtiu: Thunder Noble	Blue
+Arthur: Hapless Hero	Green
+Barst: The Hatchet	Green
+Bartre: Fearless Warrior	Green
+Beruka: Quiet Assassin	Green
+Boey: Skillful Survivor	Green
+Camilla: Bewitching Beauty	Green
+Cecilia: Etrurian General	Green
+Cherche: Wyvern Friend	Green
+Fae: Divine Dragon	Green
+Frederick: Polite Knight	Green
+Gunter: Inveterate Soldier	Green
+Hawkeye: Desert Guardian	Green
+Libra: Fetching Friar	Green
+Merric: Wind Mage	Green
+Nino: Pious Mage	Green
+Raven: Peerless Fighter	Green
+Sheena: Princess of Gra	Green
+Soren: Shrewd Strategist	Green
+Titania: Mighty Mercenary	Green
+Azama: Carefree Monk	Colorless
+Clarine: Refined Noble	Colorless
+Felicia: Maid Mayhem	Colorless
+Gaius: Candy Stealer	Colorless
+Gordin: Altean Archer	Colorless
+Jakob: Devoted Servant	Colorless
+Jeorge: Perfect Shot	Colorless
+Kagero: Honorable Ninja	Colorless
+Kaze: Easygoing Ninja	Colorless
+Klein: Silver Nobleman	Colorless
+Lachesis: Lionheart's Sister	Colorless
+Legault: The Hurricane	Colorless
+Leon: True of Heart	Colorless
+Lissa: Sprightly Cleric	Colorless
+Lucius: The Light	Colorless
+Maria: Minerva's Sister	Colorless
+Matthew: Faithful Spy	Colorless
+Nanna: Nordion Princess	Colorless
+Niles: Cruel to Be Kind	Colorless
+Priscilla: Delicate Princess	Colorless
+Rebecca: Wildflower	Colorless
+Saizo: Angry Ninja	Colorless
+Sakura: Loving Priestess	Colorless
+Serra: Outspoken Cleric	Colorless
+Setsuna: Absent Archer	Colorless
+Sothe: Zephyr	Colorless
+Virion: Elite Archer	Colorless
+Wrys: Kindly Priest	Colorless
