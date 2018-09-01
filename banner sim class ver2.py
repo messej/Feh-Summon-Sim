@@ -29,6 +29,7 @@ class Banner():
         loc = fname + r"\3.txt"
         bag =  RarityBag(3, loc)
         self.pools["three_bag"] = bag
+    #def _fill_bags(self,
     #def get_pool(self,key):
     #    return self.pools[key]
     def set_base_rates(self, focus, five, four, three, *args):
@@ -52,9 +53,9 @@ class Banner():
         focus, five = self._ratehelper(self.pools["five_focus_bag"].base_rate, self.pools["five_bag"].base_rate, pity, 1)
         return (focus, five, four, three)
     def _ratehelper(self, base_rate1, base_rate2, pity, sign):#self?
-        total = 100*(base_rate1 + base_rate2)
-        rate1 = base_rate1 + sign * pity * 0.5 * base_rate1/total
-        rate2 = base_rate2 + sign * pity * 0.5 * base_rate2/total
+        total = base_rate1 + base_rate2
+        rate1 = base_rate1 + sign * pity * 0.5 * base_rate1/total/100
+        rate2 = base_rate2 + sign * pity * 0.5 * base_rate2/total/100
         return rate1, rate2
     #for futureproofing
     def _rh(self, pity, sign, *base_rates):#self?
@@ -134,7 +135,7 @@ print(bool(a.pools['five_focus_bag']))
 a.pools['five_focus_bag'].add("a")
 print(bool(a.pools['five_focus_bag']))
 def main():
-    folder = r"D:\programs\feh\banner cyl2"
+    folder = r"banner cyl2"
     focus = folder + r"\5f.txt"
     regular = ("five_focus_bag", "five_bag", "four_bag", "three_bag")
     cyl2 = Banner("cyl2", regular)
