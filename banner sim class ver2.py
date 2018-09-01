@@ -52,7 +52,7 @@ class Banner():
         focus, five = self._ratehelper(self.pools["five_focus_bag"].base_rate, self.pools["five_bag"].base_rate, pity, 1)
         return (focus, five, four, three)
     def _ratehelper(self, base_rate1, base_rate2, pity, sign):#self?
-        total = base_rate1 + base_rate2
+        total = 100*(base_rate1 + base_rate2)
         rate1 = base_rate1 + sign * pity * 0.5 * base_rate1/total
         rate2 = base_rate2 + sign * pity * 0.5 * base_rate2/total
         return rate1, rate2
@@ -63,7 +63,7 @@ class Banner():
         for base_rate in base_rates:
             total += base_rate
         for base_rate in base_rates:
-            rate = base_rate + sign * pity * 0.5 * base_rate/total
+            rate = base_rate + sign * pity * 0.5 * base_rate/(total*100)
             rates.append(rate)
         return rates
     def generate(self,p2):
@@ -142,7 +142,7 @@ def main():
     cyl2.fill_bags(folder)
     #print(cyl2.pools)
     cyl2.set_base_rates(3/100,3/100,58/100,36/100)
-    cyl2.five_star_failed = 0
+    cyl2.five_star_failed = 5
     s = cyl2.generate_rates()
     cyl2.generate(s)
     print(cyl2.five_session)
