@@ -66,13 +66,14 @@ class Banner():
             rate = base_rate + sign * pity * 0.5 * base_rate/total
             rates.append(rate)
         return rates
-    def generate(self):
+    def generate(self,p2):
         p = []
         heroes = []
         #pools = self.kind
         for pool in self.kind:
             p.append(self.pools[pool].current_rate)
-        chosen_pools = np.random.choice(len(self.kind), 5, p)
+        chosen_pools = np.random.choice(len(self.kind), 5, p=p2)
+        print(p2,chosen_pools,len(self.kind))
         for pool_pos in chosen_pools:
             pool = self.kind[pool_pos]
             heroes.append(self.pools[pool].random())
@@ -93,6 +94,7 @@ class Hero():
         self.rarity = rarity
     def __repr__(self):
         return f"Hero({self.name}, {self.color}, {self.rarity})"
+        #return self.name
 
 class RarityBag(RandBag.RandomBag):
     def __init__(self, rarity, fname = None):
@@ -137,7 +139,14 @@ def main():
     regular = ("five_focus_bag", "five_bag", "four_bag", "three_bag")
     cyl2 = Banner("cyl2", regular)
     cyl2.pools["five_focus_bag"] = RarityBag(5,focus)
-    print(cyl2.pools["five_focus_bag"])
+    cyl2.fill_bags(folder)
+    #print(cyl2.pools)
+    cyl2.set_base_rates(3/100,3/100,58/100,36/100)
+    cyl2.five_star_failed = 0
+    s = cyl2.generate_rates()
+    cyl2.generate(s)
+    print(cyl2.five_session)
+    
 main()
     
 
