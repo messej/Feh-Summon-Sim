@@ -1,4 +1,5 @@
 from RandBag import RandomBag
+from ast import literal_eval
 import RandBag
 import numpy as np
 class Game():
@@ -15,32 +16,29 @@ class Banner():
         self.kind = kind
         self.free = True
         self.five_star_failed = 0
-        self.pools = {"five_focus_bag" : RarityBag(5),
-                      "four_focus_bag" : RarityBag(4)}
+        self.pools = {"five_focus_bag" : Pool(5),
+                      "four_focus_bag" : Pool(4)}
         self.five_session = None
         
     def fill_bags(self, fname):
         #for loc, rar in zip(locs,rars):
         loc = fname + r"\5.txt"
-        bag =  RarityBag(5, loc)
+        bag =  Pool(5, loc)
         self.pools["five_bag"] = bag
         loc = fname + r"\4.txt"
-        bag =  RarityBag(4, loc)
+        bag =  Pool(4, loc)
         self.pools["four_bag"] = bag
         loc = fname + r"\3.txt"
-        bag =  RarityBag(3, loc)
+        bag =  Pool(3, loc)
         self.pools["three_bag"] = bag
     #def _fill_bags(self,
 
-    def set_base_rates(self, focus, five, four, three, *args):
+    def set_base_rates(self, *args):
         """rates should be ints ex: 5 is 5%
         #types of banners "fest" "legendary" "regular" "4 and 5" """
-        self.pools["five_focus_bag"].base_rate = focus
-        self.pools["five_bag"].base_rate = five
-        self.pools["four_bag"].base_rate = four
-        self.pools["three_bag"].base_rate = three
-        #self.pools["four_focus_bag"].base_rate = args[0]
-        self.total_base_five_rate = focus + five
+        for kind, arg in zip(self.kinds, args):
+            self.pool[kind].base_rate = arg
+            
     def generate_rates(self):
         pity = self.five_star_failed//5
         #this is such a rare case that I don't think it's documented how it actually works
@@ -79,14 +77,32 @@ class Banner():
             pool = self.kind[pool_pos]
             heroes.append(self.pools[pool].random())
         self.five_session = heroes
+    def get_current_rates(self):
+        p = []
+        for pool in self.kind:
+            p.append(self.pools[pool].current_rate)
+        return p
 
 class FiveSession():
-    def __init__(self, banner):
+    def __init__(self, banner, **colors):
         self.banner = banner
-        self.heroes = self.generate()
-    def generate(self):
-        p = self.banner.generate_rates()
-        #pools = [self.
+        #I'm assuming they won't add new colors for now
+        self.colors = {"Red":[], "Blue":[], "Green":[], "Colorless":[]}
+        self.size = 5
+        self.cost = (5, 4, 4, 4, 3)
+        self._generate()
+    def _generate(self):
+        p = self.banner.get_current_rates()
+        chosen_pools = np.random.choice(len(self.banner.kind), 5, p=p)
+        for pool_pos in chosen_pools:
+            pool = self.banner.kind[pool_pos]
+            hero = self.banner.pools[pool].random()
+            self.colors[hero.color].append(hero)
+    def summon(self, color):
+        hero = self.colors[color].pop()
+        cost = self.cost[5 - self.size]
+        self.size -=1
+        return hero, cost #change?
 
 class Hero():
     def __init__(self, name, color, rarity = None):
@@ -97,23 +113,59 @@ class Hero():
         return f"Hero({self.name}, {self.color}, {self.rarity})"
         #return self.name
 
-class RarityBag(RandBag.RandomBag):
+class Pool(RandBag.RandomBag):
     def __init__(self, rarity, fname = None):
         super().__init__()
         self.rarity = rarity
         self.base_rate = None########
         self.current_rate = None
-        self.pity_increses = None
+        self.pity_sign = None
         if fname:
             self.fill(fname)
     def __repr__(self):
-        return f"RarityBag{self.items}"
+        return f"Pool{self.items}"
     
     def fill(self,fname):
         infile = open(fname,"r")
         for line in infile:
             hero = Hero(*line.split(sep="\t"), self.rarity)
             self.add(hero)
+
+class Pool2(RandBag.RandomBag):
+    def __init__(self, fname = None):
+        super().__init__()
+        self.name = None
+        self.rarity = None
+        self.base_rate = None
+        self.current_rate = None
+        #self.pity_sign = None
+        self.pity_effect = None
+        if fname:
+            self.fname = fname
+            infile = open(fname,"r")
+            x = literal_eval(infile.readline())
+            self.set_parts(**x)
+            self.fill(infile)
+            infile.close()
+    def __repr__(self):
+        return f"Pool{self.fname}"
+    def fill(self,infile):
+        for line in infile:
+            hero = Hero(*line.split(sep="\t"), self.rarity)
+            self.add(hero)
+    def set_parts(self, name, rarity, base_rate, sign = None, pity_effect = None):
+        self.name = name
+        self.rarity = rarity
+        self.base_rate = base_rate
+        #self.pity_sign = sign
+        self.pity_effect = pity_effect
+    def add_to_file(self, fname = None):
+        #TODO
+        pass
+    def remove_from_file(self, fname = None):
+        #TODO
+        pass
+
 class Player(Game):
     #temp cls
     def __init__(self,targets,failed_order,orbs,banner):
@@ -154,7 +206,7 @@ def main():
     focus = folder + r"\5f.txt"
     regular = ("five_focus_bag", "five_bag", "four_bag", "three_bag")
     cyl2 = Banner("cyl2", regular)
-    cyl2.pools["five_focus_bag"] = RarityBag(5,focus)
+    cyl2.pools["five_focus_bag"] = Pool(5,focus)
     cyl2.fill_bags(folder)
     #print(cyl2.pools)
     cyl2.set_base_rates(3/100,3/100,58/100,36/100)
