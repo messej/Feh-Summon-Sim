@@ -17,6 +17,7 @@ class Banner():
         self.five_star_failed = 0
         self.pools = {"five_focus_bag" : RarityBag(5),
                       "four_focus_bag" : RarityBag(4)}
+        self.five_session = None
         
     def fill_bags(self, fname):
         #for loc, rar in zip(locs,rars):
@@ -30,8 +31,7 @@ class Banner():
         bag =  RarityBag(3, loc)
         self.pools["three_bag"] = bag
     #def _fill_bags(self,
-    #def get_pool(self,key):
-    #    return self.pools[key]
+
     def set_base_rates(self, focus, five, four, three, *args):
         """rates should be ints ex: 5 is 5%
         #types of banners "fest" "legendary" "regular" "4 and 5" """
@@ -114,26 +114,41 @@ class RarityBag(RandBag.RandomBag):
         for line in infile:
             hero = Hero(*line.split(sep="\t"), self.rarity)
             self.add(hero)
-"""def read_banner_no_focus(fname):
-    five_star_pool = []
-    four_star_pool = []
-    three_star_pool = []
-    all_heroes = []
-    infile = open(fname,"r")
-    for line in infile:
-        name, color, rarity3, rarity4, rarity5 = line.split()
-        all_heroes.append((name, rarity3, rarity4, rarity5, color))
-        if (int(rarity3)):
-            three_star_pool.append((name,color))
-        if (int(rarity4)):
-            four_star_pool.append((name,color))
-        if (int(rarity5)):
-            five_star_pool.append((name,color))
-    return three_star_pool, four_star_pool, five_star_pool, all_heroes"""
-a = Banner("a","fest")
-print(bool(a.pools['five_focus_bag']))
-a.pools['five_focus_bag'].add("a")
-print(bool(a.pools['five_focus_bag']))
+class Player(Game):
+    #temp cls
+    def __init__(self,targets,failed_order,orbs,banner):
+        super().__init__()
+        self.orb_count = orbs
+        self.orbs_spent = []
+        self.targets = targets
+        self.failed_order = failed_order
+        self.banner = banner
+    def summon(self):
+        s = self.banner.generate_rates()
+        self.banner.generate(s)
+        session_heroes = []
+        for color in self.targets:
+            for hero in self.banner.five_session:
+                    if hero.color == color:
+                        session_heroes.append(hero)
+        if not session_heroes:
+            for color in self.failed_order:
+                for hero in self.banner.five_session:
+                    if hero.color == color:
+                        session_heroes.append(hero)
+                        break
+                if session_heroes:
+                    break
+        for hero in session_heroes:
+            if not hero.rarity == 5:
+                self.banner.five_star_failed += 1
+            else:
+                self.banner.five_star_failed = 0
+        self.hero_pool.append(session_heroes)
+            
+                    
+    
+
 def main():
     folder = r"banner cyl2"
     focus = folder + r"\5f.txt"
@@ -143,10 +158,15 @@ def main():
     cyl2.fill_bags(folder)
     #print(cyl2.pools)
     cyl2.set_base_rates(3/100,3/100,58/100,36/100)
-    cyl2.five_star_failed = 5
-    s = cyl2.generate_rates()
-    cyl2.generate(s)
-    print(cyl2.five_session)
+    cyl2.five_star_failed = 0
+    high = ("Green", "Blue", "Colorless", "Red")
+    high3 = (("Green", "Colorless", "Red"),("Green", "Blue", "Red"))
+    high2 = ("Green", "Red")
+    low = ("Red", "Colorless", "Blue", "Green")
+    messej = Player(high, low, 1, cyl2)
+    for i in range(100):
+        messej.summon()
+    print(messej.hero_pool)
     
 main()
     
