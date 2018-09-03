@@ -11,15 +11,24 @@ class Game():
         self.banners.append(banner)
 
 class Banner():
-    def __init__(self, name, kind):
+    def __init__(self, name = None):
         self.name = name
-        self.kind = kind
+        self.kind = None
         self.free = True
         self.five_star_failed = 0
-        self.pools = {"five_focus_bag" : Pool(5),
-                      "four_focus_bag" : Pool(4)}
+        self.pools = dict()
         self.five_session = None
-        
+        if name:
+            self.dir_name = "banner " + name +r"\"
+            infile = open(self.dir_name,"r")
+            x = literal_eval(infile.readline())
+            infile.close()
+            self.set_parts(**x)
+    def set_parts(self, kind = None, **pools):
+        self.kind = kind
+        for blah in kind:
+            #TODO
+            pass
     def fill_bags(self, fname):
         #for loc, rar in zip(locs,rars):
         loc = fname + r"\5.txt"
@@ -32,39 +41,47 @@ class Banner():
         bag =  Pool(3, loc)
         self.pools["three_bag"] = bag
     #def _fill_bags(self,
-
+    def pity(self):
+        return self.five_star_failed//5
     def set_base_rates(self, *args):
-        """rates should be ints ex: 5 is 5%
-        #types of banners "fest" "legendary" "regular" "4 and 5" """
-        for kind, arg in zip(self.kinds, args):
+        for kind, arg in zip(self.kind, args):
             self.pool[kind].base_rate = arg
             
     def generate_rates(self):
         pity = self.five_star_failed//5
+        #old way preserved show high pity logic in comparison to normal stuff
         #this is such a rare case that I don't think it's documented how it actually works
         #I've considered it negligible
         #if pity > 24:
         #    f = _ratehelper(self.pools["five_focus_bag"].base_rate, self.pools["five_bag"].base_rate, 100, 1)
         #    return (f[0], f[1], 0, 0)#not correct
         #    return [self.pools["five_focus_bag"].base_rate/(2*self.pools["five_bag"].base_rate), self.pools["five_bag"].base_rate/(2*self.pools["five_focus_bag"].base_rate),0,0]
-        four, three = self._ratehelper(self.pools["four_bag"].base_rate, self.pools["three_bag"].base_rate, pity, -1)
-        focus, five = self._ratehelper(self.pools["five_focus_bag"].base_rate, self.pools["five_bag"].base_rate, pity, 1)
-        return (focus, five, four, three)
+        #four, three = self._ratehelper(self.pools["four_bag"].base_rate, self.pools["three_bag"].base_rate, pity, -1)
+        #focus, five = self._ratehelper(self.pools["five_focus_bag"].base_rate, self.pools["five_bag"].base_rate, pity, 1)
+        pos = []
+        neg = []
+        for kind in self.kind:
+            pool = self.pools[kind]
+            if pool.increases(): #as of now could also test rarity
+                pos.append(pool)
+            else:
+                neg.append(pool)
+        self._rh(pity, 1, *pos)
+        self._rh(pity, -1, *neg)
+        
     def _ratehelper(self, base_rate1, base_rate2, pity, sign):#self?
         total = base_rate1 + base_rate2
         rate1 = base_rate1 + sign * pity * 0.5 * base_rate1/total/100
         rate2 = base_rate2 + sign * pity * 0.5 * base_rate2/total/100
         return rate1, rate2
     #for futureproofing
-    def _rh(self, pity, sign, *base_rates):#self?
+    def _rh(self, pity, sign, *pools):#self?
         total = 0
         rates = []
-        for base_rate in base_rates:
-            total += base_rate
-        for base_rate in base_rates:
-            rate = base_rate + sign * pity * 0.5 * base_rate/(total*100)
-            rates.append(rate)
-        return rates
+        for pool in pools:
+            total += pool.base_rate
+        for pool in pools:
+            pool.current_rate = pool.base_rate + sign * pity * 0.5 * pool.base_rate/(total*100)
     def generate(self,p2):
         p = []
         heroes = []
@@ -132,7 +149,7 @@ class Pool(RandBag.RandomBag):
             self.add(hero)
 
 class Pool2(RandBag.RandomBag):
-    def __init__(self, fname = None):
+    def __init__(self, fname = None, **kwargs):
         super().__init__()
         self.name = None
         self.rarity = None
@@ -144,7 +161,7 @@ class Pool2(RandBag.RandomBag):
             self.fname = fname
             infile = open(fname,"r")
             x = literal_eval(infile.readline())
-            self.set_parts(**x)
+            self.set_parts(**kwargs)#decide gosh darn it
             self.fill(infile)
             infile.close()
     def __repr__(self):
@@ -159,6 +176,10 @@ class Pool2(RandBag.RandomBag):
         self.base_rate = base_rate
         #self.pity_sign = sign
         self.pity_effect = pity_effect
+    def increases(self):
+        return self.pity_effect > 0
+    def update_rate(self):
+        self.current_rate = self.base_rate + self.pity_effect * self.banner.pity()
     def add_to_file(self, fname = None):
         #TODO
         pass

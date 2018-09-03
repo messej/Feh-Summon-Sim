@@ -1,0 +1,2 @@
+{"kind":("5f", "5", "4", "3")}
+{"5f":{ "name" : "5f", "rarity" : 5, "base_rate" : 0.03, "sign" : 1, "pity_effect" : 0.0025 }, "5":{ "name" : "5", "rarity" : 5, "base_rate" : 0.03, "sign" : 1, "pity_effect" : 0.0025 }, "4":{ "name" : "4", "rarity" : 4, "base_rate" : 0.58, "sign" : -1, "pity_effect" : -0.003085106382978723 }, "3":{ "name" : "3", "rarity" : 3, "base_rate" : 0.36, "sign" : -1, "pity_effect" : -0.0019148936170212765 }}
